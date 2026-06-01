@@ -31,15 +31,16 @@ jobs:
           python -m py_compile main.py
 
   build-and-push-image:
-    needs: test-and-validate
     runs-on: ubuntu-latest
+    needs: test-and-validate
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # Create a placeholder credentials file so the Docker build succeeds on GitHub's runner
-      - name: Inject Mock Credentials Placeholder
-        run: echo "{}" > credentials.json
+      # 1. This new step converts your username to lowercase safely
+      - name: Convert repository name to lowercase
+        run: |
+          echo "REPO_LOWERCASE=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -48,12 +49,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Docker Image
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/travel-bot:latest
+          # 2. Swap out github.repository for your new lowercase env variable
+          tags: ghcr.io/${{ env.REPO_LOWERCASE }}:latest
 
   deploy-to-gcp:
     needs: build-and-push-image
