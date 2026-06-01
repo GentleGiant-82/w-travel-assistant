@@ -68,16 +68,20 @@ jobs:
           username: ${{ secrets.GCP_VM_USERNAME }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           script: |
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/${{ github.repository_owner }}/travel-bot:latest
-            docker stop travel_bot || true
-            docker rm travel_bot || true
+            # 1. Force the registry repository slug to lowercase locally on the host
+            REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
             
-            # Run the container using port 80 and inject the VM's environmental keys
+            # 2. Pull the latest image safely
+            docker pull ghcr.io/${REPO_LOWER}:latest
+            
+            # 3. Stop and remove existing containers if they exist (|| true bypasses errors if missing)
+            docker stop travel-bot || true
+            docker rm travel-bot || true
+            
+            # 4. Run the container
             docker run -d \
               -p 80:8000 \
-              --name travel_bot \
-              --restart always \
-              --e GCP_PROJECT_id="emerald-vent-384708" \
-              ghcr.io/${{ github.repository_owner }}/travel-bot:latest
-
+              --name travel-bot \
+              --restart unless-stopped \
+              -e GCP_PROJECT_ID="emerald-vent-384708" \
+              ghcr.io/${REPO_LOWER}:latest
