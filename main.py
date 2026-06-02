@@ -12,6 +12,10 @@ from googleapiclient.discovery import build
 from google.cloud import secretmanager
 
 # --- CONFIGURATION & ENV VARIABLES ---
+
+# 1. Fallback safely to the injected Docker environment variable
+GCP_PROJECT_ID = os.getenv("GCP_PROJECT_ID", "emerald-vent-384708")
+
 def get_secret(secret_id):
     client = secretmanager.SecretManagerServiceClient()
     name = f"projects/{os.getenv('GCP_PROJECT_ID')}/secrets/{secret_id}/versions/latest"
@@ -19,17 +23,16 @@ def get_secret(secret_id):
     return response.payload.data.decode("UTF-8")
 
 # Fetch all keys from the single JSON secret
-config = json.loads(get_secret("tulip_config"))
+config = json.loads(get_secret("tulip-bot"))
 
 OPENWEATHER_KEY = config["OPENWEATHER_KEY"]
 GOOGLE_MAPS_KEY = config["GOOGLE_MAPS_KEY"]
 TELEGRAM_TOKEN = config["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_USER_ID = config["TELEGRAM_USER_ID"]
-PROJECT_ID = config["GCP_PROJECT_ID"]
 CALENDAR_ID = config["GOOGLE_CALENDAR_ID"]
 
 # Load the Calendar Credentials directly from Secret Manager
-calendar_creds_json = get_secret("google_calendar_creds")
+calendar_creds_json = config["GOOGLE_CALENDAR_CREDS_JSON"]
 creds = service_account.Credentials.from_service_account_info(
     json.loads(calendar_creds_json), 
     scopes=['https://www.googleapis.com/auth/calendar.readonly']

@@ -211,6 +211,7 @@ tempCodeRunnerFile.py
 
 # Idea
 .idea
+.DS_Store
 
 # Marimo
 marimo/_static/
