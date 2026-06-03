@@ -29,7 +29,7 @@ OPENWEATHER_KEY = config["OPENWEATHER_KEY"]
 GOOGLE_MAPS_KEY = config["GOOGLE_MAPS_KEY"]
 TELEGRAM_TOKEN = config["TELEGRAM_TOKEN"]
 TELEGRAM_USER_ID = config["TELEGRAM_USER_ID"]
-CALENDAR_ID = config["GOOGLE_CALENDAR_ID"]
+CALENDAR_ID = config["CALENDAR_ID"]
 
 # Load the Calendar Credentials directly from Secret Manager
 calendar_creds_json = config["GOOGLE_CALENDAR_CREDS_JSON"]
