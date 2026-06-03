@@ -68,7 +68,17 @@ curl -X POST "https://api.telegram.org/bot<YOUR_TELEGRAM_BOT_TOKEN>/setWebhook" 
 6. If the server mapping handles cleanly, your terminal will instantly echo back this confirmation payload:
 {"ok":true,"result":true,"description":"Webhook was set"}
 
+It's possible to create this tunnel once, and keep it running in the background:
+ssh -fN -R 80:127.0.0.1:8000 nokey@localhost.run
 
+Get your new address:
+ps aux | grep ssh
+
+For killing it, run:
+pkill -f "nokey@localhost.run"
+
+# Debug
+See logs: docker logs -f --timestamps travel-bot
 
 
 

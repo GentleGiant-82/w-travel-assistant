@@ -32,11 +32,14 @@ TELEGRAM_TOKEN = config["TELEGRAM_TOKEN"]
 TELEGRAM_USER_ID = config["TELEGRAM_USER_ID"]
 CALENDAR_ID = config["CALENDAR_ID"]
 
+# define scopes
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+
 # Load the Calendar Credentials directly from Secret Manager
 calendar_creds_json = config["GOOGLE_CALENDAR_CREDS_JSON"]
 creds = service_account.Credentials.from_service_account_info(
     calendar_creds_json,
-    scopes=['https://www.googleapis.com/auth/calendar.readonly']
+    scopes=SCOPES
 )
 
 # Initialize Gemini Client
