@@ -56,3 +56,19 @@ GCP_VM_USERNAME: Your SSH account connection profile user name (displayed in you
 
 GCP_SSH_PRIVATE_KEY: Your private SSH key string data (generated on your machine or retrieved from your platform connection profile configuration files).
 
+# Set https and hook up telegram
+
+1. Open an SSH terminal to the machine, and run: ssh -R 80:localhost:80 nokey@localhost.run
+2. Look at your terminal screen. It will display a continuous live message block containing a dedicated secure URL ending in .localhost.run
+3. Copy that entire https://...localhost.run string to your clipboard. Leave this terminal window running completely undisturbed on your computer so the active line stays up.
+4. Open a second, completely separate terminal window on your computer (or use your desktop web browser).
+5. Execute this clean network request to clear Telegram's old memory and inject your fresh address (replace the placeholders with your actual Bot Token and the localhost.run link you just generated):
+curl -X POST "https://api.telegram.org/bot<YOUR_TELEGRAM_BOT_TOKEN>/setWebhook" \
+     -d "url=https://<YOUR_NEW_TUNNEL_SUBDOMAIN>.localhost.run/webhook"
+6. If the server mapping handles cleanly, your terminal will instantly echo back this confirmation payload:
+{"ok":true,"result":true,"description":"Webhook was set"}
+
+
+
+
+

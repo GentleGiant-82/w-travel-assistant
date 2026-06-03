@@ -27,7 +27,7 @@ config = json.loads(get_secret("tulip-bot"))
 
 OPENWEATHER_KEY = config["OPENWEATHER_KEY"]
 GOOGLE_MAPS_KEY = config["GOOGLE_MAPS_KEY"]
-TELEGRAM_TOKEN = config["TELEGRAM_BOT_TOKEN"]
+TELEGRAM_TOKEN = config["TELEGRAM_TOKEN"]
 TELEGRAM_USER_ID = config["TELEGRAM_USER_ID"]
 CALENDAR_ID = config["GOOGLE_CALENDAR_ID"]
 
