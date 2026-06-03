@@ -25,6 +25,7 @@ def get_secret(secret_id):
 # Fetch all keys from the single JSON secret
 config = json.loads(get_secret("tulip-bot"))
 
+GEMINI_KEY = config["GEMINI_API_KEY"]
 OPENWEATHER_KEY = config["OPENWEATHER_KEY"]
 GOOGLE_MAPS_KEY = config["GOOGLE_MAPS_KEY"]
 TELEGRAM_TOKEN = config["TELEGRAM_TOKEN"]
@@ -39,7 +40,7 @@ creds = service_account.Credentials.from_service_account_info(
 )
 
 # Initialize Gemini Client
-client = genai.Client()
+client = genai.Client(api_key=GEMINI_KEY)
 SYSTEM_INSTRUCTION = (
     "You are 'Tulip', a proactive, witty personal travel assistant for a family vacation in Holland. "
     "You have direct access to live tools for weather, travel times, and the family Google Calendar. "
