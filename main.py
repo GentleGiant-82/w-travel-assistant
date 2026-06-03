@@ -34,7 +34,7 @@ CALENDAR_ID = config["CALENDAR_ID"]
 # Load the Calendar Credentials directly from Secret Manager
 calendar_creds_json = config["GOOGLE_CALENDAR_CREDS_JSON"]
 creds = service_account.Credentials.from_service_account_info(
-    json.loads(calendar_creds_json), 
+    calendar_creds_json,
     scopes=['https://www.googleapis.com/auth/calendar.readonly']
 )
 
